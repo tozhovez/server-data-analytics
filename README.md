@@ -19,10 +19,12 @@ Serverless Architecture on AWS cloud platform for storing and analyzing events d
 
 #### need an AWS account:
         1. an AWS Identity and Access Management (IAM) user with permission to use Amazon SQS, Lambda, 
-                and AWS Key Management Service (AWS KMS), AWS Secrets Manager, AWS Glue and Athena and Amazon S3, Amazon EventBridge
+                and AWS Key Management Service (AWS KMS), AWS Secrets Manager, AWS Glue and Athena and 
+                Amazon S3, Amazon EventBridge
         2. create an AWS KMS keys to encrypt each message body using Amazon server-side: 
                 Amazon SQS, AWS Secrets Manager, AWS Glue and S3 and Amazon EventBridge
-        3. create the secrets in AWS Secrets Manager to store external REST API access tokens(keys) and GitHub personal access token
+        3. create the secrets in AWS Secrets Manager to store external REST API access tokens(keys) 
+                and GitHub personal access token
         4. create Amazon Kinesis Data Streams and two Amazon Kinesis Data Firehoses            
         5. create buckets are containers for data stored in S3 (raw-data, Athena data storage)
         6. create Athena database
