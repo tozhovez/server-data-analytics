@@ -35,11 +35,12 @@ Serverless Architecture on AWS cloud platform for storing and analyzing events d
 #### development:
         1. python3.9
         2. npm
-        3. serverless framework (deploy)
+        3. serverless framework (deploy) for dev
         4. git
         5. awscli
         6. create "~.aws/credentials" with ("aws_access_key_id" and "aws_secret_access_key")
         7. Makefile
+        8. Teraform
 
 <img src="ddd.png" width="900"/>
 
