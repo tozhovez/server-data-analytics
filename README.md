@@ -37,5 +37,5 @@ Serverless Architecture on AWS cloud platform for storing and analyzing events d
         6. create "~.aws/credentials" with ("aws_access_key_id" and "aws_secret_access_key")
         7. Makefile
 
-
+<img src="ddd.png" width="900"/>
 
