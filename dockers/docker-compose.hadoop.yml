@@ -10,10 +10,10 @@ services:
       - 8042:8042
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup
-      - /home/sopka/onkolos/datastore/hadoop/data:/data/hadoop
-      - /home/sopka/onkolos/datastore/hadoop/log:/usr/local/hadoop/logs
+      - ~/onkolos/datastore/hadoop/data:/data/hadoop
+      - ~/onkolos/datastore/hadoop/log:/usr/local/hadoop/logs
     networks:
-      hadoop-cluster:
+      presto_network:
         ipv4_address: 10.0.2.2
     extra_hosts:
       - "master:10.0.2.2"
@@ -31,7 +31,7 @@ services:
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup
     networks:
-      hadoop-cluster:
+      presto_network:
         ipv4_address: 10.0.2.3
     extra_hosts:
       - "master:10.0.2.2"
@@ -49,7 +49,7 @@ services:
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup
     networks:
-      hadoop-cluster:
+      presto_network:
         ipv4_address: 10.0.2.4
     extra_hosts:
       - "master:10.0.2.2"
@@ -67,7 +67,7 @@ services:
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup
     networks:
-      hadoop-cluster:
+      presto_network:
         ipv4_address: 10.0.2.5
     extra_hosts:
       - "master:10.0.2.2"
@@ -85,7 +85,7 @@ services:
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup
     networks:
-      hadoop-cluster:
+      presto_network:
         ipv4_address: 10.0.2.6
     extra_hosts:
       - "master:10.0.2.2"
@@ -103,7 +103,7 @@ services:
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup
     networks:
-      hadoop-cluster:
+      presto_network:
         ipv4_address: 10.0.2.7
     extra_hosts:
       - "master:10.0.2.2"
@@ -114,7 +114,7 @@ services:
       - "slave5:10.0.2.7"
 
 networks:
- hadoop-cluster:
+ presto_network:
   ipam:
    driver: default
    config:
