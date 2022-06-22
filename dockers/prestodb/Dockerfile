@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-slim-buster
+FROM openjdk:20-jdk-slim-buster
 
 ENV PRESTO_VERSION=0.273.2
 ENV PRESTO_SERVER_URL=https://repo1.maven.org/maven2/com/facebook/presto/presto-server/${PRESTO_VERSION}/presto-server-${PRESTO_VERSION}.tar.gz
