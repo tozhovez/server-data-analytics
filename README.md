@@ -25,9 +25,9 @@
 #### need an DockerHub account:
         1. Docker Hub
         2. Docker Images
-        <img src="docs/docker-images.png" width="600"/>
+<img src="docs/docker-images.png" width="600"/>
         3. Presto Admin
-        <img src="docs/presto-admin.png" width="600"/>
+<img src="docs/presto-admin.png" width="600"/>
         
         
         
