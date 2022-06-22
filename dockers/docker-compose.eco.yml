@@ -1,0 +1,147 @@
+services:
+  
+
+  master:
+    image: apache/hadoop:3
+    hostname: master
+    container_name: master
+    privileged: true
+    ports:
+      - 8088:8088
+      - 9870:9870
+      - 8042:8042
+      - 10000:10000
+      - 10002:10002
+      - 16010:16010
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - ~/onkolos/datastore/hdfs:/data/hadoop
+      - ~/onkolos/datastore/hadoop/log:/usr/local/hadoop/logs
+      - ~/onkolos/datastore/hbase/log/master:/usr/local/hbase/logs
+      - ~/onkolos/datastore/hive/log:/usr/local/hive/logs
+      - ~/onkolos/datastore/sqoop/log:/usr/local/sqoop/logs
+    networks:
+      presto_network:
+        ipv4_address: 10.0.2.3
+    extra_hosts:
+      - "mariadb:10.0.2.2"
+      - "master:10.0.2.3"
+      - "slave1:10.0.2.4"
+      - "slave2:10.0.2.5"
+      - "slave3:10.0.2.6"
+      - "slave4:10.0.2.7"
+      - "slave5:10.0.2.8"
+
+  slave1:
+    image: apache/hadoop:3
+    hostname: slave1
+    container_name: slave1
+    privileged: true
+    ports:
+      - 16030:16030
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - ~/onkolos/datastore/hbase/log/slave1:/usr/local/hbase/logs
+    networks:
+      presto_network:
+        ipv4_address: 10.0.2.4
+    extra_hosts:
+
+      - "master:10.0.2.3"
+      - "slave1:10.0.2.4"
+      - "slave2:10.0.2.5"
+      - "slave3:10.0.2.6"
+      - "slave4:10.0.2.7"
+      - "slave5:10.0.2.8"
+
+  slave2:
+    image: apache/hadoop:3
+    hostname: slave2
+    container_name: slave2
+    privileged: true
+    ports:
+      - 16031:16030
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - ~/onkolos/datastore/hbase/log/slave2:/usr/local/hbase/logs
+    networks:
+      presto_network:
+        ipv4_address: 10.0.2.5
+    extra_hosts:
+
+      - "master:10.0.2.3"
+      - "slave1:10.0.2.4"
+      - "slave2:10.0.2.5"
+      - "slave3:10.0.2.6"
+      - "slave4:10.0.2.7"
+      - "slave5:10.0.2.8"
+
+  slave3:
+    image: apache/hadoop:3
+    hostname: slave3
+    container_name: slave3
+    privileged: true
+    ports:
+      - 16032:16030
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - ~/onkolos/datastore/hbase/log/slave3:/usr/local/hbase/logs
+    networks:
+      presto_network:
+        ipv4_address: 10.0.2.6
+    extra_hosts:
+      - "master:10.0.2.3"
+      - "slave1:10.0.2.4"
+      - "slave2:10.0.2.5"
+      - "slave3:10.0.2.6"
+      - "slave4:10.0.2.7"
+      - "slave5:10.0.2.8"
+
+  slave4:
+    image: apache/hadoop:3
+    hostname: slave4
+    container_name: slave4
+    privileged: true
+    ports:
+      - 16033:16030
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - ~/onkolos/datastore/hbase/log/slave4:/usr/local/hbase/logs
+    networks:
+      presto_network:
+        ipv4_address: 10.0.2.7
+    extra_hosts:
+      - "master:10.0.2.3"
+      - "slave1:10.0.2.4"
+      - "slave2:10.0.2.5"
+      - "slave3:10.0.2.6"
+      - "slave4:10.0.2.7"
+      - "slave5:10.0.2.8"
+
+  slave5:
+    image: apache/hadoop:3
+    hostname: slave5
+    container_name: slave5
+    privileged: true
+    ports:
+      - 16034:16030
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - ~/onkolos/datastore/hbase/log/slave5:/usr/local/hbase/logs
+    networks:
+      presto_network:
+        ipv4_address: 10.0.2.8
+    extra_hosts:
+      - "master:10.0.2.3"
+      - "slave1:10.0.2.4"
+      - "slave2:10.0.2.5"
+      - "slave3:10.0.2.6"
+      - "slave4:10.0.2.7"
+      - "slave5:10.0.2.8"
+
+networks:
+ presto_network:
+  ipam:
+   driver: default
+   config:
+   - subnet: 10.0.2.0/24

@@ -1,0 +1,121 @@
+services:
+  master:
+    image: apache/hadoop:3
+    hostname: master
+    container_name: master
+    privileged: true
+    ports:
+      - 8088:8088
+      - 9870:9870
+      - 8042:8042
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - /home/sopka/onkolos/datastore/hadoop/data:/data/hadoop
+      - /home/sopka/onkolos/datastore/hadoop/log:/usr/local/hadoop/logs
+    networks:
+      hadoop-cluster:
+        ipv4_address: 10.0.2.2
+    extra_hosts:
+      - "master:10.0.2.2"
+      - "slave1:10.0.2.3"
+      - "slave2:10.0.2.4"
+      - "slave3:10.0.2.5"
+      - "slave4:10.0.2.6"
+      - "slave5:10.0.2.7"
+
+  slave1:
+    image: apache/hadoop:3
+    hostname: slave1
+    container_name: slave1
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    networks:
+      hadoop-cluster:
+        ipv4_address: 10.0.2.3
+    extra_hosts:
+      - "master:10.0.2.2"
+      - "slave1:10.0.2.3"
+      - "slave2:10.0.2.4"
+      - "slave3:10.0.2.5"
+      - "slave4:10.0.2.6"
+      - "slave5:10.0.2.7"
+
+  slave2:
+    image: apache/hadoop:3
+    hostname: slave2
+    container_name: slave2
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    networks:
+      hadoop-cluster:
+        ipv4_address: 10.0.2.4
+    extra_hosts:
+      - "master:10.0.2.2"
+      - "slave1:10.0.2.3"
+      - "slave2:10.0.2.4"
+      - "slave3:10.0.2.5"
+      - "slave4:10.0.2.6"
+      - "slave5:10.0.2.7"
+
+  slave3:
+    image: apache/hadoop:3
+    hostname: slave3
+    container_name: slave3
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    networks:
+      hadoop-cluster:
+        ipv4_address: 10.0.2.5
+    extra_hosts:
+      - "master:10.0.2.2"
+      - "slave1:10.0.2.3"
+      - "slave2:10.0.2.4"
+      - "slave3:10.0.2.5"
+      - "slave4:10.0.2.6"
+      - "slave5:10.0.2.7"
+
+  slave4:
+    image: apache/hadoop:3
+    hostname: slave4
+    container_name: slave4
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    networks:
+      hadoop-cluster:
+        ipv4_address: 10.0.2.6
+    extra_hosts:
+      - "master:10.0.2.2"
+      - "slave1:10.0.2.3"
+      - "slave2:10.0.2.4"
+      - "slave3:10.0.2.5"
+      - "slave4:10.0.2.6"
+      - "slave5:10.0.2.7"
+
+  slave5:
+    image: apache/hadoop:3
+    hostname: slave5
+    container_name: slave5
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    networks:
+      hadoop-cluster:
+        ipv4_address: 10.0.2.7
+    extra_hosts:
+      - "master:10.0.2.2"
+      - "slave1:10.0.2.3"
+      - "slave2:10.0.2.4"
+      - "slave3:10.0.2.5"
+      - "slave4:10.0.2.6"
+      - "slave5:10.0.2.7"
+
+networks:
+ hadoop-cluster:
+  ipam:
+   driver: default
+   config:
+   - subnet: 10.0.2.0/24

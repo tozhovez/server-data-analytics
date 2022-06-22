@@ -1,0 +1,169 @@
+services:
+  jupyter-lab:
+    image: hjben/jupyter-lab:spark-livy
+    hostname: jupyter-lab
+    container_name: jupyter-lab
+    privileged: true
+    ports:
+      - 8888:8888
+      - 4040-4044:4040-4044
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - /home/sopka/onkolos/datastore/jupyter/workspace:/root/workspace
+    networks:
+      spark-cluster:
+        ipv4_address: 10.0.2.2
+    extra_hosts:
+      - "jupyter-lab:10.0.2.2"
+      - "master:10.0.2.3"
+      - "worker1:10.0.2.4"
+      - "worker2:10.0.2.5"
+      - "worker3:10.0.2.6"
+      - "worker4:10.0.2.7"
+      - "worker5:10.0.2.8"
+
+  master:
+    image: hjben/spark:3.1.1-livy
+    hostname: master
+    container_name: master
+    privileged: true
+    ports:
+      - 8080-8081:8080-8081
+      - 8998:8998
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - /home/sopka/onkolos/datastore/jupyter/workspace:/root/workspace
+      - /home/sopka/onkolos/datastore/jupyter/log/master:/usr/local/spark/logs
+    networks:
+      spark-cluster:
+        ipv4_address: 10.0.2.3
+    extra_hosts:
+      - "jupyter-lab:10.0.2.2"
+      - "master:10.0.2.3"
+      - "worker1:10.0.2.4"
+      - "worker2:10.0.2.5"
+      - "worker3:10.0.2.6"
+      - "worker4:10.0.2.7"
+      - "worker5:10.0.2.8"
+
+  worker1:
+    image: hjben/spark:3.1.1-jdk1.8.0
+    hostname: worker1
+    container_name: worker1
+    privileged: true
+    ports:
+      - 8082:8081
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - /home/sopka/onkolos/datastore/jupyter/workspace:/root/workspace
+      - /home/sopka/onkolos/datastore/jupyter/log/worker1:/usr/local/spark/logs
+    networks:
+      spark-cluster:
+        ipv4_address: 10.0.2.4
+    extra_hosts:
+      - "jupyter-lab:10.0.2.2"
+      - "cmak:10.0.2.3"
+      - "worker1:10.0.2.4"
+      - "worker2:10.0.2.5"
+      - "worker3:10.0.2.6"
+      - "worker4:10.0.2.7"
+      - "worker5:10.0.2.8"
+
+  worker2:
+    image: hjben/spark:3.1.1-jdk1.8.0
+    hostname: worker2
+    container_name: worker2
+    privileged: true
+    ports:
+      - 8083:8081
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - /home/sopka/onkolos/datastore/jupyter/workspace:/root/workspace
+      - /home/sopka/onkolos/datastore/jupyter/log/worker2:/usr/local/spark/logs
+    networks:
+      spark-cluster:
+        ipv4_address: 10.0.2.5
+    extra_hosts:
+      - "jupyter-lab:10.0.2.2"
+      - "cmak:10.0.2.3"
+      - "worker1:10.0.2.4"
+      - "worker2:10.0.2.5"
+      - "worker3:10.0.2.6"
+      - "worker4:10.0.2.7"
+      - "worker5:10.0.2.8"
+
+  worker3:
+    image: hjben/spark:3.1.1-jdk1.8.0
+    hostname: worker3
+    container_name: worker3
+    privileged: true
+    ports:
+      - 8084:8081
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - /home/sopka/onkolos/datastore/jupyter/workspace:/root/workspace
+      - /home/sopka/onkolos/datastore/jupyter/log/worker3:/usr/local/spark/logs
+    networks:
+      spark-cluster:
+        ipv4_address: 10.0.2.6
+    extra_hosts:
+      - "jupyter-lab:10.0.2.2"
+      - "cmak:10.0.2.3"
+      - "worker1:10.0.2.4"
+      - "worker2:10.0.2.5"
+      - "worker3:10.0.2.6"
+      - "worker4:10.0.2.7"
+      - "worker5:10.0.2.8"
+
+  worker4:
+    image: hjben/spark:3.1.1-jdk1.8.0
+    hostname: worker4
+    container_name: worker4
+    privileged: true
+    ports:
+      - 8085:8081
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - /home/sopka/onkolos/datastore/jupyter/workspace:/root/workspace
+      - /home/sopka/onkolos/datastore/jupyter/log/worker4:/usr/local/spark/logs
+    networks:
+      spark-cluster:
+        ipv4_address: 10.0.2.7
+    extra_hosts:
+      - "jupyter-lab:10.0.2.2"
+      - "cmak:10.0.2.3"
+      - "worker1:10.0.2.4"
+      - "worker2:10.0.2.5"
+      - "worker3:10.0.2.6"
+      - "worker4:10.0.2.7"
+      - "worker5:10.0.2.8"
+
+  worker5:
+    image: hjben/spark:3.1.1-jdk1.8.0
+    hostname: worker5
+    container_name: worker5
+    privileged: true
+    ports:
+      - 8086:8081
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - /home/sopka/onkolos/datastore/jupyter/workspace:/root/workspace
+      - /home/sopka/onkolos/datastore/jupyter/log/worker5:/usr/local/spark/logs
+    networks:
+      spark-cluster:
+        ipv4_address: 10.0.2.8
+    extra_hosts:
+      - "jupyter-lab:10.0.2.2"
+      - "cmak:10.0.2.3"
+      - "worker1:10.0.2.4"
+      - "worker2:10.0.2.5"
+      - "worker3:10.0.2.6"
+      - "worker4:10.0.2.7"
+      - "worker5:10.0.2.8"
+
+networks:
+ spark-cluster:
+  ipam:
+   driver: default
+   config:
+   - subnet: 10.0.2.0/24
