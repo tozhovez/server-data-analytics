@@ -1,0 +1,39 @@
+# A docker-compose must always start by the version tag.
+# We use "3.9" because it's the last version at this time.
+version: "3.9"
+
+
+networks:
+  onkolos:
+    name: onkolos
+    driver: bridge
+    
+
+
+
+# You should know that docker-composes works with services.
+
+#####################################################################
+#          Onkolos data server services                             #
+#####################################################################
+
+#services:
+  # to create: a data server.
+  # That is any services.
+  
+    #container_name: 
+    #image:
+    #hostname: 
+    #ports:      
+    #environment:
+    #volumes:
+    #restart: unless-stopped
+    #command:
+    #configs:
+    #depends_on:
+    #logging:
+    #    options:
+    #      max-size: 1000m
+    #networks:
+    #  - onkolos
+

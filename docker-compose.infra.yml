@@ -1,0 +1,152 @@
+# A docker-compose must always start by the version tag.
+# We use "3.9" because it's the last version at this time.
+version: "3.9"
+
+
+networks:
+  onkolos:
+    name: onkolos
+    driver: bridge
+    
+
+
+
+# You should know that docker-composes works with services.
+
+#####################################################################
+#          Onkolos data server services                             #
+#####################################################################
+
+services:
+  # to create: a data server.
+  # That is any services.
+  
+    #container_name: 
+    #image:
+    #hostname: 
+    #ports:      
+    #environment:
+    #volumes:
+    #restart: unless-stopped
+    #command:
+    #configs:
+    #depends_on:
+    #logging:
+    #    options:
+    #      max-size: 1000m
+    #networks:
+    #  - onkolos
+  #trino-coordinator:
+  #  container_name: trino-coordinator
+  #  image: 'trinodb/trino:latest'
+  #  hostname: trino-coordinator
+  #  ports:
+  #    - '28080:8080'
+  #  volumes:
+  #    - ${HOME}/onkolos/datastore/trino/etc/trino:/etc/trino
+  #  networks:
+  #    - onkolos
+  
+  
+  mariadb:
+    container_name: mariadb
+    image: 'mariadb:latest'
+    hostname: mariadb
+    ports:
+      - "127.0.0.1:23306:3306"
+    environment:
+      #- MYSQL_DATABASE=metastore_db
+      #MYSQL_ROOT_PASSWORD: admin
+      - MYSQL_HOST=localhost
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=chip314
+      
+    volumes:
+      - ${HOME}/onkolos/datastore/mariadb/var/lib/mysql:/var/lib/mysql
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: 1000m
+    networks:
+      - onkolos
+
+  #hive-metastore:
+  #  build: 'hive-metastore'
+  #  container_name: hive-metastore
+  #  hostname: hive-metastore
+  #  image: 'bitsondatadev/hive-metastore:latest'
+  #  ports:
+  #    - '29083:9083' # Metastore Thrift
+  #  volumes:
+  #    - ./conf/metastore-site.xml:/opt/apache-hive-metastore-3.0.0-bin/conf/metastore-site.xml:ro
+  #  environment:
+  #    METASTORE_DB_HOSTNAME: mariadb
+  #  depends_on:
+  #    - mariadb
+  #  networks:
+  #    - onkolos
+
+  #minio:
+  #  container_name: minio
+  #  hostname: minio
+  #  image: 'minio/minio:latest'
+  #  ports:
+  #    - '29000:9000'
+  #    - '29001:9001'
+  #  volumes:
+  #    - ${HOME}/onkolos/datastore/minio/data:/data
+  #  environment:
+  #    MINIO_ACCESS_KEY: minioadmin
+  #    MINIO_SECRET_KEY: minioadmin
+  #  command: server /data --console-address ":9001"
+  #  restart: unless-stopped
+  #  logging:
+  #      options:
+  #        max-size: 1000m
+  #  networks:
+  #    - onkolos
+  
+  dbeaver:
+    container_name: dbeaver
+    image: dbeaver/cloudbeaver:latest
+    hostname: dbeaver
+    ports:
+      - '29093:8978'
+    volumes: 
+      - ${HOME}/onkolos/datastore/dbeaver/workspace:/opt/cloudbeaver/workspace
+    restart: always
+    logging:
+        options:
+          max-size: 1000m
+    networks:
+      - onkolos
+  
+  redis:
+    container_name: redis
+    image: "redis:alpine"
+    hostname: "redis"
+    ports:
+      - "26379:6379"
+    restart: unless-stopped
+    logging:
+        options:
+          max-size: 1000m
+    networks:
+      - onkolos
+  
+  consul:
+    container_name: consul
+    image: "consul:latest"
+    hostname: "consul"
+    volumes:
+      - ${HOME}/onkolos/datastore/consul/data:/consul/data
+    ports:
+      - 28500:8500
+    command: agent -server -ui -bind 0.0.0.0 -client 0.0.0.0 -bootstrap -bootstrap-expect 1
+    restart: unless-stopped
+    logging:
+        options:
+          max-size: 1000m
+    networks:
+      - onkolos
+
