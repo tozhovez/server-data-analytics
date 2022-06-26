@@ -28,7 +28,13 @@
 <img src="docs/docker-images.png" width="600"/>
         3. Presto Admin
 <img src="docs/presto-admin.png" width="600"/>
-        
+        4. dbeaver 
+<img src="docs/dbeaver-ui.png" width="600"/>
+
+
+http://localhost:29093
+
+http://localhost:28500
         
         
 

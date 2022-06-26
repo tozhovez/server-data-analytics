@@ -53,17 +53,17 @@ services:
     image: 'mariadb:latest'
     hostname: mariadb
     ports:
-      - "127.0.0.1:23306:3306"
+      - "23306:3306"
     environment:
-      #- MYSQL_DATABASE=metastore_db
-      #MYSQL_ROOT_PASSWORD: admin
-      - MYSQL_HOST=localhost
-      - MYSQL_USER=admin
-      - MYSQL_PASSWORD=chip314
+      MYSQL_DATABASE: metastore_db
+      MARIADB_ROOT_PASSWORD: admin
+      #- MYSQL_HOST=localhost
+      #- MYSQL_USER=admin
+      #- MYSQL_PASSWORD=chip314
       
     volumes:
       - ${HOME}/onkolos/datastore/mariadb/var/lib/mysql:/var/lib/mysql
-    restart: unless-stopped
+    restart: always
     logging:
       options:
         max-size: 1000m
@@ -150,3 +150,71 @@ services:
     networks:
       - onkolos
 
+
+  influxdb:
+    container_name: influxdb
+    image: influxdb:alpine
+    hostname: "influxdb"
+    #environment:
+    #  - INFLUXDB_BIND_ADDRESS=:8088
+    volumes:
+      - ${HOME}/onkolos/datastore/influxdb/var/lib/influxdb:/var/lib/influxdb
+    ports:
+      - "28086:8086"
+      #- "8088:8088"
+    restart: unless-stopped
+    logging:
+        options:
+          max-size: 1000m
+    networks:
+      - onkolos
+
+  chronograf:
+    container_name: chronograf
+    hostname: "chronograf"
+    image: "chronograf:alpine"
+    volumes:
+      - ${HOME}/onkolos/datastore/chronograf/var/lib/chronograf:/var/lib/chronograf
+    ports:
+      - "28888:8888"
+    depends_on:
+      - influxdb
+    logging:
+        options:
+          max-size: 1000m
+    networks:
+      - onkolos
+  
+  kapacitor:
+    container_name: kapacitor
+    image: 'kapacitor:alpine'
+    hostname: kapacitor
+    ports:
+      - '29092:9092'
+    environment:
+      - KAPACITOR_INFLUXDB_0_URLS_0=http://influxdb:8086
+    depends_on:
+      - influxdb
+    logging:
+        options:
+          max-size: 1000m
+    networks:
+      - onkolos
+    
+
+  telegraf:
+    hostname: telegraf
+    image: 'telegraf:alpine'
+    container_name: telegraf
+    #configs:
+    #- source: telegraf-conf
+    #- target: /etc/telegraf/telegraf.conf
+    depends_on:
+      - influxdb
+    ports:
+      - '28186:8186'
+    logging:
+        options:
+          max-size: 1000m
+    networks:
+      - onkolos

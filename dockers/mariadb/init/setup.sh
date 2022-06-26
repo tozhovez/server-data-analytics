@@ -1,0 +1,5 @@
+mysql -h 127.0.0.1 -u root -P 23306 -p
+CREATE USER 'admin'@'%' IDENTIFIED BY 'chip314';
+GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+exit;
