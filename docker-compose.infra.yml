@@ -70,6 +70,22 @@ services:
     networks:
       - onkolos
 
+  hive-metastore:
+    build: 'hive-metastore'
+    container_name: hive-metastore
+    hostname: hive-metastore
+    
+    ports:
+      - '29083:9083' # Metastore Thrift
+    volumes:
+      - ./conf/metastore-site.xml:/opt/apache-hive-metastore-3.0.0-bin/conf/metastore-site.xml:ro
+    environment:
+      METASTORE_DB_HOSTNAME: mariadb
+    depends_on:
+      - mariadb
+      networks:
+      - onkolos
+  
   #hive-metastore:
   #  build: 'hive-metastore'
   #  container_name: hive-metastore
@@ -86,25 +102,25 @@ services:
   #  networks:
   #    - onkolos
 
-  #minio:
-  #  container_name: minio
-  #  hostname: minio
-  #  image: 'minio/minio:latest'
-  #  ports:
-  #    - '29000:9000'
-  #    - '29001:9001'
-  #  volumes:
-  #    - ${HOME}/onkolos/datastore/minio/data:/data
-  #  environment:
-  #    MINIO_ACCESS_KEY: minioadmin
-  #    MINIO_SECRET_KEY: minioadmin
-  #  command: server /data --console-address ":9001"
-  #  restart: unless-stopped
-  #  logging:
-  #      options:
-  #        max-size: 1000m
-  #  networks:
-  #    - onkolos
+  minio:
+    container_name: minio
+    hostname: minio
+    image: 'minio/minio:latest'
+    ports:
+      - '29000:9000'
+      - '29001:9001'
+    volumes:
+      - ${HOME}/onkolos/datastore/minio/data:/data
+    environment:
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+    command: server /data --console-address ":9001"
+    restart: unless-stopped
+    logging:
+        options:
+          max-size: 1000m
+    networks:
+      - onkolos
   
   dbeaver:
     container_name: dbeaver
@@ -155,13 +171,16 @@ services:
     container_name: influxdb
     image: influxdb:alpine
     hostname: "influxdb"
-    #environment:
+    environment:
+      - INFLUXDB_ADMIN_ENABLED=true
     #  - INFLUXDB_BIND_ADDRESS=:8088
     volumes:
       - ${HOME}/onkolos/datastore/influxdb/var/lib/influxdb:/var/lib/influxdb
     ports:
       - "28086:8086"
       #- "8088:8088"
+      # Administrator interface port 
+      - "28883:8083"
     restart: unless-stopped
     logging:
         options:
@@ -179,6 +198,8 @@ services:
       - "28888:8888"
     depends_on:
       - influxdb
+      - telegraf
+      - kapacitor
     logging:
         options:
           max-size: 1000m
@@ -195,6 +216,7 @@ services:
       - KAPACITOR_INFLUXDB_0_URLS_0=http://influxdb:8086
     depends_on:
       - influxdb
+      - telegraf
     logging:
         options:
           max-size: 1000m
@@ -218,3 +240,4 @@ services:
           max-size: 1000m
     networks:
       - onkolos
+  
