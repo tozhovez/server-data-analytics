@@ -36,17 +36,106 @@ services:
     #      max-size: 1000m
     #networks:
     #  - onkolos
-  #trino-coordinator:
-  #  container_name: trino-coordinator
-  #  image: 'trinodb/trino:latest'
-  #  hostname: trino-coordinator
-  #  ports:
-  #    - '28080:8080'
-  #  volumes:
-  #    - ${HOME}/onkolos/datastore/trino/etc/trino:/etc/trino
-  #  networks:
-  #    - onkolos
   
+  
+  trino-coordinator:
+    container_name: coordinator
+    image: 'trinodb/trino:latest'
+    hostname: coordinator
+    ports:
+      - '28080:8080'
+    volumes:
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/coordinator/etc/catalog:/etc/trino/catalog
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/coordinator/etc/config.properties:/etc/trino/config.properties
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/coordinator/etc/jvm.config:/etc/trino/jvm.config
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/coordinator/etc/log.properties:/etc/trino/log.properties
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/coordinator/etc/node.properties:/etc/trino/node.properties 
+    depends_on:
+      - trino-worker-001
+      - trino-worker-002
+      - trino-worker-003
+      - trino-worker-004
+      - trino-worker-006
+    networks:
+      - onkolos
+  
+  
+  trino-worker-001:
+    container_name: worker_001
+    image: 'trinodb/trino:latest'
+    hostname: worker_001
+    ports:
+      - '8081:8081'
+    volumes:
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_001/etc/catalog:/etc/trino/catalog
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_001/etc/config.properties:/etc/trino/config.properties
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_001/etc/jvm.config:/etc/trino/jvm.config
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_001/etc/log.properties:/etc/trino/log.properties
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_001/etc/node.properties:/etc/trino/node.properties 
+    networks:
+      - onkolos
+      
+  trino-worker-002:
+    container_name: worker_002
+    image: 'trinodb/trino:latest'
+    hostname: worker_002
+    ports:
+      - '8082:8082'
+    volumes:
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_002/etc/catalog:/etc/trino/catalog
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_002/etc/config.properties:/etc/trino/config.properties
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_002/etc/jvm.config:/etc/trino/jvm.config
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_002/etc/log.properties:/etc/trino/log.properties
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_002/etc/node.properties:/etc/trino/node.properties 
+    networks:
+      - onkolos
+  
+  
+  trino-worker-003:
+    container_name: worker_003
+    image: 'trinodb/trino:latest'
+    hostname: worker_003
+    ports:
+      - '8083:8083'
+    volumes:
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_003/etc/catalog:/etc/trino/catalog
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_003/etc/config.properties:/etc/trino/config.properties
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_003/etc/jvm.config:/etc/trino/jvm.config
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_003/etc/log.properties:/etc/trino/log.properties
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_003/etc/node.properties:/etc/trino/node.properties 
+    networks:
+      - onkolos
+  
+  trino-worker-004:
+    container_name: worker_004
+    image: 'trinodb/trino:latest'
+    hostname: worker_004
+    ports:
+      - '8084:8084'
+    volumes:
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_004/etc/catalog:/etc/trino/catalog
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_004/etc/config.properties:/etc/trino/config.properties
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_004/etc/jvm.config:/etc/trino/jvm.config
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_004/etc/log.properties:/etc/trino/log.properties
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_004/etc/node.properties:/etc/trino/node.properties 
+    networks:
+      - onkolos
+  
+  trino-worker-006:
+    container_name: worker_006
+    image: 'trinodb/trino:latest'
+    hostname: worker_006
+    ports:
+      - '8086:8086'
+    volumes:
+      
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_006/etc/catalog:/etc/trino/catalog
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_006/etc/config.properties:/etc/trino/config.properties
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_006/etc/jvm.config:/etc/trino/jvm.config
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_006/etc/log.properties:/etc/trino/log.properties
+      - ${HOME}/onkolos/server-data-analytics/dockers/trino/worker_006/etc/node.properties:/etc/trino/node.properties 
+    networks:
+      - onkolos
   
   mariadb:
     container_name: mariadb
@@ -55,12 +144,10 @@ services:
     ports:
       - "23306:3306"
     environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
       MYSQL_DATABASE: metastore_db
-      MARIADB_ROOT_PASSWORD: admin
-      #- MYSQL_HOST=localhost
-      #- MYSQL_USER=admin
-      #- MYSQL_PASSWORD=chip314
-      
     volumes:
       - ${HOME}/onkolos/datastore/mariadb/var/lib/mysql:/var/lib/mysql
     restart: always
@@ -71,56 +158,40 @@ services:
       - onkolos
 
   hive-metastore:
-    build: 'hive-metastore'
     container_name: hive-metastore
+    image: 'bitsondatadev/hive-metastore:latest'
     hostname: hive-metastore
-    
     ports:
       - '29083:9083' # Metastore Thrift
+      
     volumes:
-      - ./conf/metastore-site.xml:/opt/apache-hive-metastore-3.0.0-bin/conf/metastore-site.xml:ro
+      - ${HOME}/onkolos/server-data-analytics/dockers/hive-metastore-trino-minio/conf/metastore-site.xml:/opt/apache-hive-metastore-3.0.0-bin/conf/metastore-site.xml
+      #- ${HOME}/onkolos/server-data-analytics/dockers/delta-lake/conf/metastore-site.xml:/opt/apache-hive-metastore-3.0.0-bin/conf/metastore-site.xml:ro
     environment:
       METASTORE_DB_HOSTNAME: mariadb
     depends_on:
       - mariadb
-      networks:
+    networks:
       - onkolos
-  
-  #hive-metastore:
-  #  build: 'hive-metastore'
-  #  container_name: hive-metastore
-  #  hostname: hive-metastore
-  #  image: 'bitsondatadev/hive-metastore:latest'
-  #  ports:
-  #    - '29083:9083' # Metastore Thrift
-  #  volumes:
-  #    - ./conf/metastore-site.xml:/opt/apache-hive-metastore-3.0.0-bin/conf/metastore-site.xml:ro
-  #  environment:
-  #    METASTORE_DB_HOSTNAME: mariadb
-  #  depends_on:
-  #    - mariadb
-  #  networks:
-  #    - onkolos
-
+      
+      
   minio:
     container_name: minio
-    hostname: minio
     image: 'minio/minio:latest'
+    hostname: minio
+    
     ports:
       - '29000:9000'
       - '29001:9001'
     volumes:
       - ${HOME}/onkolos/datastore/minio/data:/data
     environment:
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: minioadmin
-    command: server /data --console-address ":9001"
-    restart: unless-stopped
-    logging:
-        options:
-          max-size: 1000m
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio123
+    command: server --console-address ":9001" /data
     networks:
       - onkolos
+
   
   dbeaver:
     container_name: dbeaver
@@ -167,77 +238,77 @@ services:
       - onkolos
 
 
-  influxdb:
-    container_name: influxdb
-    image: influxdb:alpine
-    hostname: "influxdb"
-    environment:
-      - INFLUXDB_ADMIN_ENABLED=true
-    #  - INFLUXDB_BIND_ADDRESS=:8088
-    volumes:
-      - ${HOME}/onkolos/datastore/influxdb/var/lib/influxdb:/var/lib/influxdb
-    ports:
-      - "28086:8086"
-      #- "8088:8088"
-      # Administrator interface port 
-      - "28883:8083"
-    restart: unless-stopped
-    logging:
-        options:
-          max-size: 1000m
-    networks:
-      - onkolos
-
-  chronograf:
-    container_name: chronograf
-    hostname: "chronograf"
-    image: "chronograf:alpine"
-    volumes:
-      - ${HOME}/onkolos/datastore/chronograf/var/lib/chronograf:/var/lib/chronograf
-    ports:
-      - "28888:8888"
-    depends_on:
-      - influxdb
-      - telegraf
-      - kapacitor
-    logging:
-        options:
-          max-size: 1000m
-    networks:
-      - onkolos
-  
-  kapacitor:
-    container_name: kapacitor
-    image: 'kapacitor:alpine'
-    hostname: kapacitor
-    ports:
-      - '29092:9092'
-    environment:
-      - KAPACITOR_INFLUXDB_0_URLS_0=http://influxdb:8086
-    depends_on:
-      - influxdb
-      - telegraf
-    logging:
-        options:
-          max-size: 1000m
-    networks:
-      - onkolos
-    
-
-  telegraf:
-    hostname: telegraf
-    image: 'telegraf:alpine'
-    container_name: telegraf
-    #configs:
-    #- source: telegraf-conf
-    #- target: /etc/telegraf/telegraf.conf
-    depends_on:
-      - influxdb
-    ports:
-      - '28186:8186'
-    logging:
-        options:
-          max-size: 1000m
-    networks:
-      - onkolos
-  
+  #influxdb:
+  #  container_name: influxdb
+  #  image: influxdb:alpine
+  #  hostname: "influxdb"
+  #  environment:
+  #    - INFLUXDB_ADMIN_ENABLED=true
+  #  #  - INFLUXDB_BIND_ADDRESS=:8088
+  #  volumes:
+  #    - ${HOME}/onkolos/datastore/influxdb/var/lib/influxdb:/var/lib/influxdb
+  #  ports:
+  #    - "28086:8086"
+  #    #- "8088:8088"
+  #    # Administrator interface port 
+  #    - "28883:8083"
+  #  restart: unless-stopped
+  #  logging:
+  #      options:
+  #        max-size: 1000m
+  #  networks:
+  #    - onkolos
+  #
+  #chronograf:
+  #  container_name: chronograf
+  #  hostname: "chronograf"
+  #  image: "chronograf:alpine"
+  #  volumes:
+  #    - ${HOME}/onkolos/datastore/chronograf/var/lib/chronograf:/var/lib/chronograf
+  #  ports:
+  #    - "28888:8888"
+  #  depends_on:
+  #    - influxdb
+  #    - telegraf
+  #    - kapacitor
+  #  logging:
+  #      options:
+  #        max-size: 1000m
+  #  networks:
+  #    - onkolos
+  #
+  #kapacitor:
+  #  container_name: kapacitor
+  #  image: 'kapacitor:alpine'
+  #  hostname: kapacitor
+  #  ports:
+  #    - '29092:9092'
+  #  environment:
+  #    - KAPACITOR_INFLUXDB_0_URLS_0=http://influxdb:8086
+  #  depends_on:
+  #    - influxdb
+  #    - telegraf
+  #  logging:
+  #      options:
+  #        max-size: 1000m
+  #  networks:
+  #    - onkolos
+  #  
+  #
+  #telegraf:
+  #  hostname: telegraf
+  #  image: 'telegraf:alpine'
+  #  container_name: telegraf
+  #  #configs:
+  #  #- source: telegraf-conf
+  #  #- target: /etc/telegraf/telegraf.conf
+  #  depends_on:
+  #    - influxdb
+  #  ports:
+  #    - '28186:8186'
+  #  logging:
+  #      options:
+  #        max-size: 1000m
+  #  networks:
+  #    - onkolos
+  #

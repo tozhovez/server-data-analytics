@@ -14,7 +14,13 @@ PYV := $(shell $(PYTHON) -c "import sys;t='{v[0]}.{v[1]}'.format(v=list(sys.vers
 AWS_CLI := $(shell which aws)
 PROJECT_STORAGE := ${HOME}/${PROJECT_NAME}-storage
 PACKAGE_STORAGE := ${HOME}/${PROJECT_NAME}-storage/${PACKAGE_NAME}
-
+BUILD_VERSION := latest
+ENV_CONFIGS := $(shell cat configs)
+current_branch := latest
+BUILD_VERSION=latest
+HADOOP_VERSION=3.3.3
+METASTORE_VERSION=3.0.0
+HIVE_VERSION=3.1.3
 
 .DEFAULT_GOAL: help envs
 
@@ -39,6 +45,7 @@ envs: ## envs - display envs
 	@echo "VERSION $(VERSION)"
 	@echo "PROJECT_STORAGE $(PROJECT_STORAGE)"
 	@echo "PACKAGE_STORAGE $(PACKAGE_STORAGE)"
+	@echo "ENV_CONFIGS $(ENV_CONFIGS)"
 	@echo "======================================================"
     
 .PHONY: run-infra stop-all stop-all restart-all
@@ -54,6 +61,18 @@ stop-all: ## docker-compose stop all
 
 restart-all: ## docker-compose restart all 
 	@docker-compose -f docker-compose.infra.yml -f docker-compose.prod.yml -f docker-compose.local.yml restart> /dev/null
+
+
+docker-build-base-hive-metastore:  ## building docker image for $(HIVE-METASTORE_BASE_DOCKER_IMAGE)
+	@echo "======================================================"
+	@echo "building docker image for $(HIVE-METASTORE_BASE_DOCKER_IMAGE)"
+	@echo "======================================================"
+	docker build --build-arg BUILD_VERSION=$(HIVE-METASTORE_LAST_COMMIT_SHA) \
+  		--tag $(HIVE-METASTORE_BASE_DOCKER_IMAGE):$(HIVE-METASTORE_LAST_COMMIT_SHA) \
+  		--tag $(HIVE-METASTORE_BASE_DOCKER_IMAGE):latest \
+  		hive-metastore/.
+
+
 
 
 .PHONY: clean-pyc clean-build clean-test clean

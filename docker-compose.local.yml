@@ -16,8 +16,21 @@ networks:
 #####################################################################
 #          Onkolos data server services                             #
 #####################################################################
-
+###file:///home/sopka/onkolos/server-data-analytics/dockers/hive-metastore
 #services:
+  #hive-metastore:
+  #  container_name: hive-metastore
+  #  build:
+  #    context: dockers/hive-metastore/.
+  #    dockerfile: Dockerfile
+  #    args:
+  #      BUILD_VERSION: ${BUILD_VERSION}
+  #  env_file: ./configs
+  #  image: hive-metastore
+  #  logging:
+  #    driver: "json-file"
+  #  networks:
+  #    - onkolos
   # to create: a data server.
   # That is any services.
   
