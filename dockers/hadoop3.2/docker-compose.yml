@@ -36,7 +36,7 @@ services:
       - ./hadoop.env
 
   nodemanager:
-    image: coomia/hadoop3.2-nodemanager:0.2
+    image: coomia/hadoop3.2-nodemanager:1.0
     container_name: nodemanager
     restart: always
     environment:
