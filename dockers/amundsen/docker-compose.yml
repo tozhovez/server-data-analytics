@@ -53,7 +53,7 @@ services:
       - trino-network
 
   neo4j:
-      image: neo4j:3.5.26
+      image: neo4j:3.5.35
       container_name: neo4j_amundsen
       environment:
         - NEO4J_AUTH=neo4j/test
