@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-slim-buster
+FROM openjdk:11.0.16-jre-slim-buster
 
 ENV HADOOP_VERSION=3.3.3
 ENV METASTORE_VERSION=3.0.0
