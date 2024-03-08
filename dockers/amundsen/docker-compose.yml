@@ -99,7 +99,7 @@ services:
         - PROXY_ENDPOINT=es_amundsen
       command: gunicorn -w 2 --bind :5000 search_service.search_wsgi
   amundsenmetadata:
-      image: amundsendev/amundsen-metadata:3.9.0
+      image: amundsendev/amundsen-metadata:3.13.0
       container_name: amundsenmetadata
       depends_on:
         - neo4j
