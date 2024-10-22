@@ -23,7 +23,7 @@ services:
       - "worker5:10.0.2.8"
 
   master:
-    image: hjben/spark:3.1.1-livy
+    image: hjben/spark:3.4.0-livy
     hostname: master
     container_name: master
     privileged: true
@@ -47,7 +47,7 @@ services:
       - "worker5:10.0.2.8"
 
   worker1:
-    image: hjben/spark:3.1.1-jdk1.8.0
+    image: hjben/spark:3.4.0-jdk1.8.0
     hostname: worker1
     container_name: worker1
     privileged: true
@@ -70,7 +70,7 @@ services:
       - "worker5:10.0.2.8"
 
   worker2:
-    image: hjben/spark:3.1.1-jdk1.8.0
+    image: hjben/spark:3.4.0-jdk1.8.0
     hostname: worker2
     container_name: worker2
     privileged: true
@@ -93,7 +93,7 @@ services:
       - "worker5:10.0.2.8"
 
   worker3:
-    image: hjben/spark:3.1.1-jdk1.8.0
+    image: hjben/spark:3.4.0-jdk1.8.0
     hostname: worker3
     container_name: worker3
     privileged: true
@@ -116,7 +116,7 @@ services:
       - "worker5:10.0.2.8"
 
   worker4:
-    image: hjben/spark:3.1.1-jdk1.8.0
+    image: hjben/spark:3.4.0-jdk1.8.0
     hostname: worker4
     container_name: worker4
     privileged: true
@@ -139,7 +139,7 @@ services:
       - "worker5:10.0.2.8"
 
   worker5:
-    image: hjben/spark:3.1.1-jdk1.8.0
+    image: hjben/spark:3.4.0-jdk1.8.0
     hostname: worker5
     container_name: worker5
     privileged: true
