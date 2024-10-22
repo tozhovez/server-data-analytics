@@ -87,7 +87,7 @@ services:
       environment:
         - discovery.type=single-node
   amundsensearch:
-      image: amundsendev/amundsen-search:2.11.1
+      image: amundsendev/amundsen-search:4.2.0
       container_name: amundsensearch
       ports:
         - 5001:5000
